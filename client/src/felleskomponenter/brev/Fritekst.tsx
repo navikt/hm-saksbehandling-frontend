@@ -1,9 +1,9 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent } from 'react'
 import styled from 'styled-components'
 
-import { Detail, Loader, Textarea } from '@navikt/ds-react'
+import { Detail, HStack, Loader, Textarea, VStack } from '@navikt/ds-react'
 
-export const Bakgrunnslagring = styled.div`
+export const Bakgrunnslagring = styled(HStack)`
   display: flex;
 
   justify-content: right;
@@ -11,7 +11,7 @@ export const Bakgrunnslagring = styled.div`
   gap: 0.4rem;
   padding-top: 0.5rem;
   padding-right: 0.6rem;
-  height: var(--a-spacing-4);
+  height: var(--a-spacing-8);
   margin-left: auto;
 `
 
@@ -20,7 +20,6 @@ export const Fritekst = ({
   fritekst,
   beskrivelse,
   valideringsfeil,
-  onLagre,
   lagrer,
   onTextChange,
 }: {
@@ -28,26 +27,15 @@ export const Fritekst = ({
   fritekst: string
   beskrivelse: string
   valideringsfeil?: string
-  onLagre: /*TODO*/ any
   lagrer: boolean
   onTextChange: any
 }) => {
-  const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined)
-  const debounceVentetid = 1000
-
   const onChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     onTextChange(event.target.value)
-    clearTimeout(timer)
-
-    const newTimer = setTimeout(() => {
-      onLagre(event.target.value)
-    }, debounceVentetid)
-
-    setTimer(newTimer)
   }
 
   return (
-    <>
+    <VStack>
       <Textarea
         minRows={5}
         maxRows={20}
@@ -70,6 +58,6 @@ export const Fritekst = ({
           </>
         )}
       </Bakgrunnslagring>
-    </>
+    </VStack>
   )
 }

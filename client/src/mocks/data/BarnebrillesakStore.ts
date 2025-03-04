@@ -527,8 +527,8 @@ export class BarnebrillesakStore extends Dexie {
     return this.notater.where('sakId').equals(sakId).toArray()
   }
 
-  async lagreBrevtekst(sakId: string, brevtype: string, brevtekst: string) {
-    this.brevtekst.put({ brevtype, målform: MålformType.BOKMÅL, data: { brevtekst: brevtekst }, sakId }, sakId)
+  async lagreBrevtekst(sakId: string, brevtype: string, data: any) {
+    this.brevtekst.put({ brevtype, målform: MålformType.BOKMÅL, data: data, sakId }, sakId)
   }
 
   async fjernBrevtekst(sakId: string) {

@@ -117,7 +117,7 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
           <Tekst>{hjelpemiddel.antall} stk</Tekst>
         </div>
         <div>
-          {kanEndreHmsnr() && (
+          {kanEndreHmsnr && (
             <Bleed marginBlock="1 0">
               <Button
                 variant="tertiary"

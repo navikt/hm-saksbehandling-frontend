@@ -7,6 +7,7 @@
     "@amplitude/analytics-browser": "2.11.9",
     "@grafana/faro-web-sdk": "1.12.2",
     "@grafana/faro-web-tracing": "1.12.2",
+    "@mdxeditor/editor": "^3.21.5",
     "@navikt/aksel-icons": "7.10.0",
     "@navikt/ds-css": "7.10.0",
     "@navikt/ds-react": "7.10.0",

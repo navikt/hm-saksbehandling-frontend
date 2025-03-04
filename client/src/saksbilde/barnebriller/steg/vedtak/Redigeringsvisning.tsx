@@ -1,5 +1,5 @@
 import { Button, Detail, HStack } from '@navikt/ds-react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { Fritekst } from '../../../../felleskomponenter/brev/Fritekst'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
@@ -20,6 +20,7 @@ import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabC
 import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { useSamletVurdering } from '../../useSamletVurdering'
 import { useBrev } from './brev/useBrev'
+import { useDebounce } from '../../../../felleskomponenter/brev/useDebounce'
 
 interface RedigeringsvisningProps {
   sak: Barnebrillesak
@@ -79,11 +80,16 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
     }
   }, [fritekst, submitAttempt])
 
-  const lagreUtkast = async (tekst: string) => {
-    setLagrer(true)
-    await postBrevutkast(byggBrevPayload(tekst))
-    setLagrer(false)
-  }
+  const lagreUtkast = useCallback(
+    async (tekst: string) => {
+      setLagrer(true)
+      await postBrevutkast(byggBrevPayload(tekst))
+      setLagrer(false)
+    },
+    [sak.sakId, fritekst]
+  )
+
+  useDebounce(fritekst, lagreUtkast)
 
   function byggBrevPayload(tekst?: string): BrevTekst {
     return {
@@ -128,7 +134,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
             beskrivelse="Vises i brevet som en del av begrunnelsen for avslaget"
             valideringsfeil={valideringsfeil}
             fritekst={fritekst}
-            onLagre={lagreUtkast}
+            //onLagre={lagreUtkast}
             lagrer={lagrer}
             onTextChange={setFritekst}
           />

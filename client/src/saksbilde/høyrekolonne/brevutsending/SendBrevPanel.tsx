@@ -1,6 +1,6 @@
 import { TrashIcon } from '@navikt/aksel-icons'
 import { Button, Heading, HStack, Radio, RadioGroup, Select, Skeleton, VStack } from '@navikt/ds-react'
-import { memo, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 
 import { Fritekst } from '../../../felleskomponenter/brev/Fritekst'
 import { InfoToast } from '../../../felleskomponenter/Toast'
@@ -15,6 +15,7 @@ import { useBarnebrillesak } from '../../useBarnebrillesak'
 import { HøyrekolonnePanel } from '../HøyrekolonnePanel.tsx'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
+import { useDebounce } from '../../../felleskomponenter/brev/useDebounce.ts'
 
 export interface SendBrevProps {
   sakId: string
@@ -53,6 +54,19 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
       valider()
     }
   }, [fritekst, submitAttempt])
+
+  const lagreUtkast = useCallback(
+    async (tekst: string, valgtMålform?: MålformType) => {
+      setLagrer(true)
+      await postBrevutkast(byggBrevPayload(tekst, valgtMålform))
+      setTimeout(() => {
+        setLagrer(false)
+      }, 500)
+    },
+    [sakId, målform, fritekst]
+  )
+
+  useDebounce(fritekst, lagreUtkast)
 
   const valider = () => {
     if (fritekst === '') {
@@ -121,12 +135,6 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
     setSletter(false)
   }
 
-  const lagreUtkast = async (tekst: string, valgtMålform?: MålformType) => {
-    setLagrer(true)
-    await postBrevutkast(byggBrevPayload(tekst, valgtMålform))
-    setLagrer(false)
-  }
-
   return (
     <>
       <>
@@ -156,7 +164,6 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
                   beskrivelse="Beskriv hva som mangler av dokumentasjon"
                   fritekst={fritekst}
                   valideringsfeil={valideringsfeil}
-                  onLagre={lagreUtkast}
                   lagrer={lagrer}
                   onTextChange={setFritekst}
                 />

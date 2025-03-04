@@ -58,7 +58,11 @@ const SaksbildeContent = memo(() => {
               )
             case Sakstype.BESTILLING:
             default:
-              return <Søknadsbilde />
+              return (
+                <DokumentProvider>
+                  <Søknadsbilde />
+                </DokumentProvider>
+              )
           }
         })()}
       </SaksbildeContainer>

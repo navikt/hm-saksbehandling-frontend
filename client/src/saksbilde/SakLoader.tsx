@@ -1,7 +1,7 @@
 import { Box, Skeleton } from '@navikt/ds-react'
 
 import { spacingVar } from '../felleskomponenter/Avstand.tsx'
-import { hotsakHistorikkWidth, hotsakVenstremenyWidth, søknadsbildeHovedinnholdMaxWidth } from '../GlobalStyles'
+import { hotsakHistorikkMinWidth, hotsakVenstremenyWidth, søknadsbildeHovedinnholdMaxWidth } from '../GlobalStyles'
 import { Hovedinnhold, Saksinnhold } from './komponenter/Sakskomponenter'
 import { LasterPersonlinje } from './Personlinje'
 import { SaksbildeContainer } from './Saksbilde'
@@ -11,7 +11,7 @@ export function SakLoader() {
   return (
     <SaksbildeContainer>
       <LasterPersonlinje />
-      <Hovedinnhold columns={`auto ${hotsakHistorikkWidth}`} style={{ maxWidth: '1592px' }}>
+      <Hovedinnhold columns={`auto ${hotsakHistorikkMinWidth}`} style={{ maxWidth: '1592px' }}>
         <section>
           <Box margin={spacing}>
             <Skeleton variant="rectangle" width="100%" height={30} />

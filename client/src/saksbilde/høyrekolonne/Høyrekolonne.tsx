@@ -1,22 +1,27 @@
-import { ClockDashedIcon, DocPencilIcon, WheelchairIcon } from '@navikt/aksel-icons'
+import { ArchiveIcon, ClockDashedIcon, NotePencilDashIcon, WheelchairIcon } from '@navikt/aksel-icons'
 
-import { Tabs, Tag, Tooltip } from '@navikt/ds-react'
+import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { useState } from 'react'
 import { søknadslinjeHøyde } from '../../GlobalStyles'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 import { useErNotatPilot } from '../../state/authentication'
 import { HøyrekolonneTabs } from '../../types/types.internal'
+import { JournalførteNotater } from '../journalførteNotater/JornalførteNotater.tsx'
 import { useSak } from '../useSak'
 import { Historikk } from './historikk/Historikk'
 import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversikt'
 import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddeloversikt'
+import { HøyrekolonnePanel } from './HøyrekolonnePanel.tsx'
 import { Saksnotater } from './notat/Saksnotater'
 import { useSaksnotater } from './notat/useSaksnotater'
+//import { useJournalførteNotater } from './notat/useJournalførteNotater.tsx'
+//import styled from 'styled-components'
 
 export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())
   const { kanBehandleSak } = useSaksregler()
   const { sak } = useSak()
+  //const { journalførteNotater, isLoading: henterJournalførteNotater } = useJournalførteNotater(sak?.data.sakId)
   const { notater } = useSaksnotater(sak?.data.sakId)
   const erNotatPilot = useErNotatPilot()
   const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
@@ -28,7 +33,7 @@ export function Høyrekolonne() {
   const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => antall + artikkel.antall, 0)
 
   return (
-    <div style={{ borderLeft: '1px solid var(--a-border-subtle)', borderRight: '1px solid var(--a-border-subtle)' }}>
+    <Box borderWidth="0 1" borderColor="border-subtle">
       <Tabs
         size="small"
         value={valgtHøyrekolonneTab}
@@ -61,12 +66,30 @@ export function Høyrekolonne() {
                 value={HøyrekolonneTabs.NOTAT}
                 icon={
                   <>
-                    <DocPencilIcon title="Notat" />
+                    <NotePencilDashIcon title="Notat" />
                     {notater && (
                       <Tag variant="neutral-moderate" size="xsmall">
                         {antallNotater}
                       </Tag>
                     )}
+                  </>
+                }
+              />
+            </Tooltip>
+          )}
+          {sak != null && (
+            <Tooltip content="Journalførte notater">
+              <Tabs.Tab
+                value={HøyrekolonneTabs.JOURNALFØRINGSNOTAT}
+                icon={
+                  <>
+                    <ArchiveIcon title="Journalførte notater" />
+                    {/*!henterJournalførteNotater && (
+                      <Tag variant="neutral-moderate" size="xsmall" style={{ position: 'relative' }}>
+                        {journalførteNotater?.antallNotater}
+                        {journalførteNotater?.harUtkast && <NotificationBadge />}
+                      </Tag>
+                    )*/}
                   </>
                 }
               />
@@ -84,7 +107,25 @@ export function Høyrekolonne() {
             <Saksnotater sakId={sak?.data.sakId} lesevisning={!kanBehandleSak} />
           </Tabs.Panel>
         )}
+        {sak != null && (
+          <Tabs.Panel value={HøyrekolonneTabs.JOURNALFØRINGSNOTAT.toString()}>
+            <HøyrekolonnePanel tittel="Journalførte notater">
+              <JournalførteNotater sak={sak.data} lesevisning={!kanBehandleSak} />
+            </HøyrekolonnePanel>
+          </Tabs.Panel>
+        )}
       </Tabs>
-    </div>
+    </Box>
   )
 }
+
+/*const NotificationBadge = styled.span`
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  border-radius: 9999px;
+  border: 2px solid var(--a-surface-default);
+  background: var(--a-surface-danger);
+  width: 12px;
+  height: 12px;
+`*/

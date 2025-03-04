@@ -2,7 +2,7 @@ import { delay, http, HttpResponse } from 'msw'
 
 import type { JournalføringRequest, OpprettetSakResponse } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
-import { lastDokumentBarnebriller } from '../data/felles'
+import { lastDokument, lastDokumentBarnebriller } from '../data/felles'
 import { respondForbidden, respondInternalServerError, respondNotFound, respondPdf } from './response'
 
 interface JournalpostParams {
@@ -48,6 +48,9 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
         break
       case '4':
         buffer = await lastDokumentBarnebriller('kvitteringsside')
+        break
+      case '6':
+        buffer = await lastDokument('journalført_notat')
         break
       case '5':
       default:

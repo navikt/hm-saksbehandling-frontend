@@ -368,10 +368,15 @@ export interface Notat {
   slettet?: string
 }
 
+export interface JournalforingsnotatTeller {
+  antallNotater: number
+  harUtkast: boolean
+}
+
 export interface BrevTekst {
   sakId: string
   målform: MålformType
-  data: { brevtekst: string }
+  data: { dokumenttittel?: string; brevtekst?: string }
   brevtype: string
 }
 
@@ -537,10 +542,16 @@ export interface Saksdokument {
   journalpostId: string
   type: SaksdokumentType
   opprettet: string
+  originalTekst?: SaksdokumentOriginalTekst
   dokumentId: string
   saksbehandler: Saksbehandler
   tittel: string
   brevkode?: string
+}
+
+export interface SaksdokumentOriginalTekst {
+  dokumenttittel: string
+  brevtekst: string
 }
 
 export interface JournalføringRequest {
@@ -700,6 +711,7 @@ export enum HøyrekolonneTabs {
   SAKSHISTORIKK = 'SAKSHISTORIKK',
   HJELPEMIDDELOVERSIKT = 'HJELPEMIDDELOVERSIKT',
   NOTAT = 'NOTAT',
+  JOURNALFØRINGSNOTAT = 'JOURNALFØRINGSNOTAT',
 }
 
 export enum BarnebrilleSidebarTabs {
@@ -712,6 +724,7 @@ export enum BarnebrilleSidebarTabs {
 export enum Brevtype {
   BARNEBRILLER_VEDTAK = 'BARNEBRILLER_VEDTAK',
   BARNEBRILLER_INNHENTE_OPPLYSNINGER = 'BARNEBRILLER_INNHENTE_OPPLYSNINGER',
+  JOURNALFØRT_NOTAT = 'JOURNALFØRT_NOTAT',
 }
 
 export interface AvvisBestilling {

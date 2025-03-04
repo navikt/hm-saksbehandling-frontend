@@ -1,0 +1,66 @@
+apiVersion: nais.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: hotsak-frontend-labs-merknader
+    team: teamdigihot
+  name: hotsak-frontend-labs-merknader
+  namespace: teamdigihot
+spec:
+  image: {{image}}
+  port: 3000
+  ingresses:
+    - https://hotsak-merknader.ekstern.dev.nav.no
+  liveness:
+    path: /isalive
+  readiness:
+    path: /isready
+  prometheus:
+    enabled: true
+    path: /metrics
+  replicas:
+    max: 1
+    min: 1
+  accessPolicy:
+    outbound:
+      rules:
+        - application: hm-grunndata-search
+  azure:
+    application:
+      enabled: true
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 10m
+      memory: 256Mi
+  secureLogs:
+    enabled: true
+  envFrom:
+    - secret: hm-saksbehandling
+  env:
+    - name: API_URL
+      value: "http://hotsak/api"
+    - name: GRUNNDATA_API_URL
+      value: "http://grunndata/api"
+    - name: FINN_HJELPEMIDDEL_API_URL
+      value: http://hm-grunndata-search.teamdigihot.svc.cluster.local
+    - name: PORT
+      value: '3000'
+    - name: BRILLEKALKULATOR_API_URL
+      value: "http://brille/api"
+    - name: CLIENT_ID_HOTSAK_API
+      value: ""
+    - name: REDIS_HOST
+      value: "http://redis"
+    - name: HEIT_KRUKKA_URL
+      value: http://heit-krukka
+    - name: USE_MSW
+      value: "true"
+    - name: GIT_COMMIT
+      value: {{commit}}
+    - name: AMPLITUDE_API_KEY
+      value: default
+    - name: AMPLITUDE_SERVER_URL
+      value: https://amplitude.nav.no/collect-auto

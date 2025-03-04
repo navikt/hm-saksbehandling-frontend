@@ -25,6 +25,7 @@ const initialState: DokumentContextType = {
   hentedeBrev: {
     [Brevtype.BARNEBRILLER_VEDTAK]: byggTomRessurs<string>(),
     [Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER]: byggTomRessurs<string>(),
+    [Brevtype.JOURNALFØRT_NOTAT]: byggTomRessurs<string>(),
   },
   settHentetBrev() {},
 }

@@ -19,6 +19,7 @@ import {
   respondUnauthorized,
 } from './response'
 import type { SakParams } from './params'
+import { hentJournalførteNotater } from '../data/journalførteNotater'
 
 export const saksbehandlingHandlers: StoreHandlersFactory = ({
   sakStore,
@@ -117,6 +118,11 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     const { sakId } = params
     const url = new URL(request.url)
     const dokumentType = url.searchParams.get('type')
+
+    if (dokumentType == 'NOTAT') {
+      await delay(500)
+      return HttpResponse.json(hentJournalførteNotater(sakId))
+    }
 
     // Hvis ingen type er angitt som query param, bruker gammel oppførsel som henter journalposter fra sak.
     // Ligger her for å bevare bakoverkompabilitet

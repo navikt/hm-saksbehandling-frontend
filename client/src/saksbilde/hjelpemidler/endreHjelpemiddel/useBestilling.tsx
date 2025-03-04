@@ -10,7 +10,9 @@ interface BestillingResponse {
 
 export function useBestilling(): BestillingResponse {
   const { saksnummer: sakId } = useParams<{ saksnummer: string }>()
-  const { data, mutate } = useSwr<{ data: Bestilling }>([`api/bestilling/${sakId}`], httpGet)
+  const { data, mutate } = useSwr<{ data: Bestilling }>([`api/bestilling/${sakId}`], httpGet, {
+    shouldRetryOnError: false,
+  })
 
   return {
     bestilling: data?.data || undefined,

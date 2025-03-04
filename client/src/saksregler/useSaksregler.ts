@@ -11,15 +11,15 @@ export function useSaksregler() {
 
   const kanBehandleSak = !!(saksbehandlerErTildeltSak && sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER)
 
+  const kanEndreHmsnr = !!(
+    sak?.sakstype === Sakstype.BESTILLING &&
+    saksbehandlerErTildeltSak &&
+    sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
+  )
+
   return {
     sakId: sak?.sakId,
-    kanEndreHmsnr(): boolean {
-      return !!(
-        sak?.sakstype === Sakstype.BESTILLING &&
-        saksbehandlerErTildeltSak &&
-        sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
-      )
-    },
+    kanEndreHmsnr,
     kanHenleggeSak(): boolean {
       return !!(saksbehandlerErTildeltSak && person?.dødsdato)
     },

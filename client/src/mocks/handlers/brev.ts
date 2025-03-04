@@ -27,6 +27,7 @@ export const brevHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => [
     await barnebrillesakStore.lagreSaksdokument(params.sakId, 'Innhent opplysninger')
     await barnebrillesakStore.oppdaterStatus(params.sakId, OppgaveStatusType.AVVENTER_DOKUMENTASJON)
     await barnebrillesakStore.fjernBrevtekst(params.sakId)
+    await delay(500)
     return respondNoContent()
   }),
 ]

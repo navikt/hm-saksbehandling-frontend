@@ -5,7 +5,12 @@ import { Route, Routes } from 'react-router-dom'
 
 import styled from 'styled-components'
 import { AlertError } from '../feilsider/AlertError'
-import { hotsakHistorikkWidth, hotsakVenstremenyWidth, hovedInnholdMaxWidth } from '../GlobalStyles'
+import {
+  hotsakHistorikkMaxWidth,
+  hotsakHistorikkMinWidth,
+  hotsakVenstremenyWidth,
+  hovedInnholdMaxWidth,
+} from '../GlobalStyles'
 import { Sakstype } from '../types/types.internal'
 import { formaterAdresse } from '../utils/formater'
 import { BestillingCard } from './bestillingsordning/BestillingCard'
@@ -43,7 +48,10 @@ const SaksbildeContent = memo(() => {
   const formidler = levering.hjelpemiddelformidler
 
   return (
-    <Hovedinnhold columns={`auto ${hotsakHistorikkWidth}`} style={{ maxWidth: `${hovedInnholdMaxWidth}` }}>
+    <Hovedinnhold
+      columns={`max(${hovedInnholdMaxWidth} )  minmax(${hotsakHistorikkMinWidth}, ${hotsakHistorikkMaxWidth})`}
+      /*style={{ maxWidth: `${hovedInnholdMaxWidth}` }}*/
+    >
       <section>
         <HGrid columns="auto">
           <Søknadslinje id={sak.data.sakId} type={sak.data.sakstype} />

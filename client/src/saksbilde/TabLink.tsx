@@ -5,7 +5,7 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { Tabs } from '@navikt/ds-react'
 
 export interface TabLinkProps {
-  children?: string
+  children?: string | ReactNode
   to: string
   title?: string
   icon?: ReactNode
